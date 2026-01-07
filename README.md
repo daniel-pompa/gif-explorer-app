@@ -63,13 +63,18 @@ The project is structured as follows:
 ├───📁 public/
 ├───📁 src/
 │   ├───📁 gifs/
-│   │   └───📁 components/
+│   │   ├───📁 actions/
+│   │   ├───📁 api/
+│   │   ├───📁 components/
+│   │   └───📁 interfaces/
 │   ├───📁 mock-data/
 │   ├───📁 shared/
 │   │   └───📁 components/
 │   ├───📄 GifsApp.tsx
 │   ├───📄 index.css
 │   └───📄 main.tsx
+├───📄 .env
+├───📄 .env.example
 ├───📄 eslint.config.js
 ├───📄 index.html
 ├───📄 LICENSE
@@ -98,13 +103,27 @@ git clone https://github.com/daniel-pompa/gif-explorer-app.git
 cd gif-explorer-app
 ```
 
-3. **Install dependencies:**
+3. **Set up environment variables:** This project requires a GIPHY API Key. You can obtain one by creating an app on the [GIPHY Developers Dashboard](https://developers.giphy.com/dashboard/).
+
+Copy the example environment file and fill in your key:
+
+```bash
+cp .env.example .env
+```
+
+Open the `.env` file and add your key:
+
+```bash
+VITE_GIPHY_API_KEY=YOUR_API_KEY
+```
+
+4. **Install dependencies:**
 
 ```bash
 npm install
 ```
 
-4. **Run the development server:**
+5. **Run the development server:**
 
 ```bash
 npm run dev
