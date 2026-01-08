@@ -1,30 +1,10 @@
-import type { Gif } from './gifs/interfaces/gif.interface';
 import { Header, SearchBar } from './shared/components';
 import { GifList, SearchHistory } from './gifs/components';
-import { useState } from 'react';
-import { getGifsByQuery } from './gifs/actions/get-gifs-by-query.action';
+import { useGifs } from './gifs/hooks/useGifs';
 
 export const GifsApp = () => {
-  const [gifs, setGifs] = useState<Gif[]>([]);
-  const [recentSearches, setRecentSearches] = useState<string[]>([]);
-
-  const handleSearch = async (query: string = '') => {
-    query = query.trim().toLowerCase();
-
-    if (query.length === 0) return;
-
-    if (recentSearches.includes(query)) return;
-
-    setRecentSearches([query, ...recentSearches].splice(0, 6));
-
-    const gifs = await getGifsByQuery(query);
-
-    setGifs(gifs);
-  };
-
-  const handleTermClicked = (searchTerm: string) => {
-    console.log({ searchTerm });
-  };
+  const { gifs, recentSearches, isLoading, error, handleSearch, handleTermClicked } =
+    useGifs();
 
   return (
     <>
@@ -32,11 +12,23 @@ export const GifsApp = () => {
         title='Gifs Explorer'
         description='Discover the best animated GIFs from GIPHY.'
       />
+
       <SearchBar placeholder='Search GIFs' onQuery={handleSearch} />
       <SearchHistory searches={recentSearches} onSelectTerm={handleTermClicked} />
 
-      {/* Gifs */}
-      <GifList gifs={gifs} />
+      {/* Loading */}
+      {isLoading && (
+        <div className='status-container'>
+          <div className='loader' />
+          <p>Loading GIFs...</p>
+        </div>
+      )}
+
+      {/* Error */}
+      {error && <div className='error-container'>{error}</div>}
+
+      {/* Content */}
+      {!isLoading && !error && <GifList gifs={gifs} />}
     </>
   );
 };
