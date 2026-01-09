@@ -22,7 +22,9 @@ const mockGifs: Gif[] = [
 ];
 
 describe('useGifs hook', () => {
+  // Silence console.error to avoid noisy output for expected API failures
   beforeEach(() => {
+    vi.spyOn(console, 'error').mockImplementation(() => {});
     vi.clearAllMocks();
     localStorage.clear();
   });
